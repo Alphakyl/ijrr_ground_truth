@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+
+<launch>
+	<arg name="enable_rviz"   		default="1"/>
+  	<arg name="enable_sim"    		default="1"/>
+  	<arg name="robot_state" 		default="1"/>
+  	<arg name="enable_mapping" 		default="0"/>
+	<arg name="vehicle_name"	default="H01"/>
+	<arg name="enable_offline" 	default="0"/>
+	<arg name="input_bag_flags" default="--clock -k"/>
+	<arg name="input_bag_filename" default="/home/kyle/data/radar/dca/no_tf_ec_hallways_run0.bag"/>
+	<arg name="output_bag_filename" default="/home/kyle/data/radar/icra/icra2021_test_data/ICRA2021_test_data/odom/ec_hallways_run0_odom.bag"/>
+		
+	<!-- For bags -->
+	<param name="/use_sim_time" value="true" if="$(arg enable_sim)"/>
+
+	<!--Relevant TF stuff (world/map) and (robot) -->
+	<node pkg="tf2_ros" type="static_transform_publisher" name="fake_origin" args="0 0 0 0 0 0 1 world map"/>
+	<include file="$(find ijrr_ground_truth)/launch/robot_publisher.launch" if="$(arg robot_state)"/>
+
+	<!-- Various Cartographer launches-->
+	<!-- <include file="$(find ijrr_ground_truth)/launch/offline_test.launch" if="$(arg enable_offline)"/> -->
+	<include file="$(find ijrr_ground_truth)/launch/online_test.launch" unless="$(arg enable_offline)"/>
+
+	<!-- Rviz -->
+	<node name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(find ijrr_ground_truth)/configs/cartographer_rviz.rviz"/>
+	
+	<!-- Pose Graph Launcher -->
+    <!-- <node pkg="ijrr_ground_truth" type="pose_graph" name="pose_graph" output="screen"/> -->
+	
+	<!-- Bags -->
+	<!-- Record Odom -->
+	<node pkg="rosbag" type="record" name="odom_recorder" output="screen" args="-O $(output_bag_filename) carto_odom"/>
+	<!-- Play Original -->
+	<node pkg="rosbag" type="play" name="player" args="$(flags) $(bag_file_name)" if="$(arg enable_sim)"/>
+	
+</launch>

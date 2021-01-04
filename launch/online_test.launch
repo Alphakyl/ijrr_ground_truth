@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+
+<launch>
+  <node name="cartographer_node" pkg="cartographer_ros"
+      type="cartographer_node" args="
+          -configuration_directory $(find ijrr_ground_truth)/configs
+          -configuration_basename 3D_1_Ouster.lua"
+      output="screen">
+    <remap from="/points2" to="/os1_cloud_node/points"/>
+    <remap from="/imu" to="/imu_out/data"/>
+  </node>
+
+  <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
+      type="cartographer_occupancy_grid_node" args="-resolution 0.05" />
+
+</launch>

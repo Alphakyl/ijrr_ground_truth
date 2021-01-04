@@ -1,0 +1,5 @@
+<?xml version="1.0" ?>
+
+<launch>
+    <node pkg="ijrr_ground_truth" type="pose_graph" name="pose_graph" output="screen"/>
+</launch>

@@ -1,0 +1,6 @@
+<launch>
+<arg name="experiment_name" default="ec_hallway"/>
+    <node pkg="rosbag" type="record" name="odom_recorder" output="screen" 
+        args="--output-prefix /home/kyle/data/radar/icra/icra2021_test_data/ICRA2021_test_data/odom/$(arg experiment_name)
+        carto_odom"/>
+</launch>
