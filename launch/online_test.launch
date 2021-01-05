@@ -7,7 +7,7 @@
           -configuration_basename 3D_1_Ouster.lua"
       output="screen">
     <remap from="/points2" to="/os1_cloud_node/points"/>
-    <remap from="/imu" to="/imu_out/data"/>
+    <remap from="/imu" to="/gx5/imu/data"/>
   </node>
 
   <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"

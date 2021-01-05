@@ -19,8 +19,8 @@ def parse_args():
 
 def retime_bag(bagfile, outfile=None):
     if outfile == None:
-        pattern == bagfile +"_retimed_%i.bag"
-        outfile = bagfile + "_merged.bag"
+        pattern = bagfile +"_retimed_%i.bag"
+        outfile = bagfile
         index = 0
         while(os.path.exists(outfile)):
             outfile=pattern%index
