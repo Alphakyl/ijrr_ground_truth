@@ -16,7 +16,7 @@ def parse_args():
 
 def flag_bag(bagfile):
     print "flag bag %s"%(bagfile)
-    with rosbag.Bag(bag_name, 'a') as bag:
+    with rosbag.Bag(bagfile, 'a') as bag:
         metadata_msg = String()
         metadata_msg.data='True'
         bag.write('/end_of_bag', metadata_msg, rospy.Time(bag.get_end_time()))
