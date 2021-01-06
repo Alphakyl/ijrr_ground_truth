@@ -32,7 +32,7 @@
 	
 	<!-- Bags -->
 	<!-- Record Odom -->
-	<node pkg="rosbag" type="record" name="odom_recorder" output="screen" args="-O $(arg output_bag_filename) carto_odom"/>
+	<node pkg="rosbag" type="record" name="odom_recorder" output="screen" args="-O $(arg output_bag_filename) lidar_ground_truth"/>
 	<!-- Play Original -->
 	<node pkg="rosbag" type="play" name="player" args="$(arg input_bag_flags) $(arg input_bag_filename)" if="$(arg enable_sim)"/>
 	

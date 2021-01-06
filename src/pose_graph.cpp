@@ -20,7 +20,7 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "pose_graph_client");
     ros::NodeHandle n;
     pose_graph_pub = n.advertise<pose_graph_msgs::PoseGraph>("pose_graph", 100);
-    odom_pub = n.advertise<nav_msgs::Odometry>("carto_odom",4000);
+    odom_pub = n.advertise<nav_msgs::Odometry>("lidar_ground_truth",4000);
     ros::ServiceClient pgraph_client = n.serviceClient<cartographer_ros_msgs::TrajectoryQuery>("trajectory_query");
     cartographer_ros_msgs::TrajectoryQuery srv;
     srv.request.trajectory_id = 0;
