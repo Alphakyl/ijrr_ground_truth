@@ -215,3 +215,7 @@ add_dependencies(pose_graph pose_graph_msgs_generate_messages_cpp)
 add_executable(pose_graph_2_odom src/pose_graph_2_odom.cpp)
 target_link_libraries(pose_graph_2_odom ${catkin_LIBRARIES})
 add_dependencies(pose_graph_2_odom pose_graph_msgs_generate_messages_cpp)
+
+add_executable(eob_pose_graph src/eob_pose_graph.cpp)
+target_link_libraries(eob_pose_graph ${catkin_LIBRARIES})
+add_dependencies(eob_pose_graph pose_graph_msgs_generate_messages_cpp)

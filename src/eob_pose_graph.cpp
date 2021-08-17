@@ -5,6 +5,7 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <nav_msgs/Odometry.h>
 #include <pose_graph_msgs/PoseGraph.h>
+#include <std_msgs/String.h>
 #include <iostream>
 #include <fstream>
 
@@ -12,16 +13,32 @@ using namespace std;
 
 ros::Publisher pose_graph_pub;
 ros::Publisher odom_pub;
+ros::Subscriber eob_sub;
+ros::ServiceClient pgraph_client;
 
 void trajectory_callback(const vector<geometry_msgs::PoseStamped>&);
+void eob_callback(const std_msgs::String::ConstPtr& msg);
+
 
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "pose_graph_client");
     ros::NodeHandle n;
     pose_graph_pub = n.advertise<pose_graph_msgs::PoseGraph>("pose_graph", 100);
-    odom_pub = n.advertise<nav_msgs::Odometry>("carto_odom",4000);
-    ros::ServiceClient pgraph_client = n.serviceClient<cartographer_ros_msgs::TrajectoryQuery>("trajectory_query");
+    odom_pub = n.advertise<nav_msgs::Odometry>("lidar_ground_truth",4000);
+    pgraph_client = n.serviceClient<cartographer_ros_msgs::TrajectoryQuery>("trajectory_query");
+    eob_sub = n.subscribe("/end_of_bag",1,eob_callback);
+    ros::Rate r(10);
+    while(ros::ok()){
+        r.sleep();
+        ros::spinOnce();
+    }
+    return 0;
+}
+
+void eob_callback(const std_msgs::String::ConstPtr& msg)
+{
+    ros::Duration(10).sleep();
     cartographer_ros_msgs::TrajectoryQuery srv;
     srv.request.trajectory_id = 0;
     if(pgraph_client.call(srv))
@@ -32,19 +49,8 @@ int main(int argc, char **argv)
     else
     {
         ROS_ERROR("Failed to call service 'trajectory_query'");
-        return -1;
     }
-
-
-    //ros::Rate loop_rate(10);
-    //while(ros::ok())
-    //{
-        trajectory_callback(srv.response.trajectory);
-    //    ros::spinOnce();
-    //    loop_rate.sleep();
-    //}
-
-    return 0;
+    trajectory_callback(srv.response.trajectory);
 }
 
 void trajectory_callback(const vector<geometry_msgs::PoseStamped>& msg)
@@ -79,4 +85,5 @@ void trajectory_callback(const vector<geometry_msgs::PoseStamped>& msg)
         //cout << i << endl;
     }
     cout << "Published full odometry" << endl;
+    ros::shutdown();
 }

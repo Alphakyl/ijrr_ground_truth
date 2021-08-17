@@ -19,12 +19,12 @@ def parse_args():
 
 def retime_bag(bagfile, outfile=None):
     if outfile == None:
-        pattern = bagfile +"_retimed_%i.bag"
-        outfile = bagfile
-        index = 0
-        while(os.path.exists(outfile)):
-            outfile=pattern%index
-            index += 1
+        # pattern = bagfile +"_retimed_%i.bag"
+        outfile = bagfile.replace('.bag','_retimed.bag')
+        # index = 0
+        # while(os.path.exists(outfile)):
+            # outfile=pattern%index
+            # index += 1
     print "retime bag %s"%(bagfile)
     print "write to %s"%(outfile)
 
