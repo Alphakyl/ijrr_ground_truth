@@ -4,13 +4,15 @@
 	<arg name="enable_rviz"   		default="1"/>
   	<arg name="enable_sim"    		default="1"/>
   	<arg name="robot_state" 		default="1"/>
-  	<arg name="enable_mapping" 		default="0"/>
+  	<arg name="enable_mapping" 		default="1"/>
 	<arg name="enable_heatmaps"	default="1"/>
 	<arg name="vehicle_name"	default="H01"/>
 	<arg name="enable_offline" 	default="0"/>
+	<arg name="enable_bagging" default="0"/>
 	<arg name="input_bag_flags" default="--clock -k"/>
 	<!-- <arg name="input_bag_filename" default="/media/kyle/45bfdd4b-6c7c-4d6a-a09d-21fbe576aa92/lb_data/2_22_2021/longboard_run0.bag"/> -->
-	<arg name="input_bag_filename" default="/media/kyle/45bfdd4b-6c7c-4d6a-a09d-21fbe576aa92/em_data/2_23_2021/edgar_classroom_run0.bag"/>
+	<!-- <arg name="input_bag_filename" default="/home/kyle/data/radar/wadar/cu_south/cu_south_run0.bag_merged.bag"/> -->
+	<arg name="input_bag_filename" default="/home/kyle/data/radar/wadar/bridge_water_run0_merged.bag"/>
 	<arg name="output_bag_filename" default="/home/kyle/data/radar/coloradar/2_22_2021/odom/longboard_run0_odom.bag"/>
 	<!-- <arg name="input_bag_filename" default="/home/kyle/data/radar/dca/no_tf_ec_hallways_run0.bag"/> -->
 	<!-- <arg name="output_bag_filename" default="/home/kyle/data/radar/icra/icra2021_test_data/ICRA2021_test_data/odom/ec_hallways_run0_odom.bag"/> -->
@@ -27,7 +29,7 @@
 	<include file="$(find ijrr_ground_truth)/launch/online_test.launch" unless="$(arg enable_offline)"/>
 
 	<!-- Launch MIMO node-->
-	<!-- <include file="$(find ijrr_ground_truth)/launch/add_heatmaps.launch" if="$(arg enable_heatmaps)"/> -->
+	<include file="$(find ijrr_ground_truth)/launch/add_heatmaps.launch" if="$(arg enable_heatmaps)"/>
 
 	<!-- Rviz -->
 	<!-- <node name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(find ijrr_ground_truth)/configs/cartographer_rviz.rviz"/> -->
@@ -37,12 +39,16 @@
     <!-- <node pkg="ijrr_ground_truth" type="pose_graph" name="pose_graph" output="screen"/> -->
 	<node pkg="ijrr_ground_truth" type="eob_pose_graph" name="pose_graph" output="screen" required="true"/>
 	
+	<!-- Octomap -->
+	<include file="$(find marble_mapping)/launch/marble_mapping.launch" if="$(arg enable_mapping)"/> 
+
 	<!-- Bags -->
 	<!-- Record Odom -->
 	<!-- <node pkg="rosbag" type="record" name="odom_recorder" output="screen" args="-O $(arg output_bag_filename) lidar_ground_truth"/> -->
-	<!-- <node pkg="rosbag" type="record" name="odom_recorder" output="screen" args="-O $(arg output_bag_filename) topcics /lidar_ground_truth /dca_node/heatmap /cascade/heatmap"/> -->
+	<node pkg="rosbag" type="record" name="odom_recorder" output="screen" args="-O $(arg output_bag_filename) topcics /lidar_ground_truth /dca_node/heatmap /cascade/heatmap" if="$(arg enable_bagging)"/>
 	
 	<!-- Play Original -->
 	<node pkg="rosbag" type="play" name="player" args="$(arg input_bag_flags) $(arg input_bag_filename)" if="$(arg enable_sim)"/>
+
 	
 </launch>

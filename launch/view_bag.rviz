@@ -6,8 +6,7 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-        - /lidar_points1
-        - /radar_heatmap1
+        - /PointCloud21
       Splitter Ratio: 0.5
     Tree Height: 728
   - Class: rviz/Selection
@@ -74,8 +73,6 @@ Visualization Manager:
           Value: false
         odom:
           Value: false
-        os1_imu:
-          Value: false
         os1_lidar:
           Value: false
         os1_sensor:
@@ -100,8 +97,6 @@ Visualization Manager:
                 gx5_link:
                   {}
                 os1_sensor:
-                  os1_imu:
-                    {}
                   os1_lidar:
                     {}
       Update Interval: 0
@@ -166,6 +161,48 @@ Visualization Manager:
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
+    - Class: rough_octomap/RoughOccupancyGrid
+      Enabled: false
+      Max. Height Display: 3.4028234663852886e+38
+      Max. Octree Depth: 16
+      Min. Height Display: -3.4028234663852886e+38
+      Name: RoughOccupancyGrid
+      Octomap Topic: /merged_map
+      Queue Size: 5
+      Value: false
+      Voxel Alpha: 1
+      Voxel Coloring: Z-Axis
+      Voxel Rendering: Occupied Voxels
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: Intensity
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 38.79999923706055
+      Min Color: 255; 0; 0
+      Min Intensity: 0
+      Name: PointCloud2
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.10000000149011612
+      Style: Flat Squares
+      Topic: /mmWaveDataHdl/RScan
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -194,7 +231,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 14.114480972290039
+      Distance: 32.239131927490234
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -209,10 +246,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.9997963905334473
+      Pitch: 0.5747967958450317
       Target Frame: imu_viz_link
       Value: Orbit (rviz)
-      Yaw: 4.987578392028809
+      Yaw: 5.635716438293457
     Saved: ~
 Window Geometry:
   Displays:
